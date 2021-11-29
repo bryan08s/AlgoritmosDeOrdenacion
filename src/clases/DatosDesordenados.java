@@ -169,4 +169,12 @@ public class DatosDesordenados {
         }
         return new DatosOrdenados(R);
     }
+    @Override
+    public String toString(){
+        String cad="";
+        for (int x : valores){
+            cad += x + ", ";
+        }
+        return cad;
+    }
 }

@@ -28,7 +28,7 @@ public class TestOrdenamiento {
 
         m = new DatosDesordenados(s, n);
         m.generarValores();
-        System.out.println( m);
+        System.out.println(" "+ m);
 
         t1 = System.nanoTime();   // start
         DatosOrdenados mob = m.bubbleSort();

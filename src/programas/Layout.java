@@ -121,7 +121,7 @@ public class Layout extends javax.swing.JFrame {
         
         long t, t1, t2;
         t1=System.nanoTime();
-        m=new DatosDesordenados(100, 1000);
+        m=new DatosDesordenados(1000, 1000);
         DatosOrdenados mo=m.QuickSort();
         t2=System.nanoTime();
         t=t1-t2;
