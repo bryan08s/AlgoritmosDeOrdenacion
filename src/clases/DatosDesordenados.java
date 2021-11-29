@@ -1,86 +1,70 @@
-package clases;
-/**
- *
- * @author Noemí Lara Acono
- */
-public class DatosDesordenados {
-    // Atributos
-    private int[] valores; 
-    private int limiteSuperior; 
-    private int size; 
 
-    public DatosDesordenados(int limite, int size) {
-        this.valores = new int[size];
-        this.limiteSuperior = limite;
-        this.size = size;
+import clases.DatosOrdenados;
+
+public class DatosDesordenados {
+
+    private int rango;//limitesuperior
+    private int nDatos;//size
+    private int[] valores;//valores
+
+    public DatosDesordenados(int rango, int nDatos) {
+        this.valores = new int[nDatos];
+        this.rango = rango;
+        this.nDatos = nDatos;
     }
-    
-    public void agregarDato(int valor){
-        valores[size]= valor;
-        size++;
+
+    public void agregarDato(int valor) {
+        valores[nDatos] = valor;
+        nDatos++;
     }
-    
-    public int getDato(int posicion){
+
+    public int getDato(int posicion) {
         return valores[posicion];
     }
-    
-    public void generarValores(){
-        for (int i=0; i < valores.length; i++){
-            double aleatorio = Math.random() * limiteSuperior;
-            valores[i] = (int) aleatorio + 1;
+
+    public void generarValores() {
+        for (int i = 0; i < valores.length; i++) {
+            double aleatorio = Math.random() * rango;
+            valores[i] = (int) aleatorio;
         }
     }
-    
-    public int getSize(){
-        return size; 
+
+    public int getRango() {
+        return rango;
     }
-    
-    public int getCapacidad(){
+
+    public int getnDatos() {
+        return nDatos;
+    }
+
+    public int[] getValores() {
+        return valores;
+    }
+
+    public int getCapacidad() {
         return valores.length;
     }
-    
-    public int getLimiteSuperior(){
-        return limiteSuperior;
-    }
-    
-    
-    public int[] getValores(){
-        return valores;
-    } 
-    
-    public int[] getCopiaValores(){
-        int [] copia = new int[size];
-        System.arraycopy(valores, 0, copia, 0, size);
+
+    public int[] getCopiaValores() {
+        int[] copia = new int[nDatos];
+        System.arraycopy(valores, 0, copia, 0, nDatos);
         return copia;
     }
-    
-    
-   
-     public DatosOrdenados algoritmoSort(){
-        
-        // obtener una copia de los datos desordenados
-        int [] arreglo = this.getCopiaValores();
-        
-        // agregar algoritmo de ordenación
-        
-        // devolver los datos ordenados
-        return new DatosOrdenados(arreglo);
-    }
-    
-    public DatosOrdenados bubbleSort(){
-        int [] arreglo = this.getCopiaValores();
+
+    public DatosOrdenados bubbleSort() {
+        int[] arreglo = this.getCopiaValores();
         int n = arreglo.length;
         int cont = 0;
         int ci = 0;
-        for (int i=0; i < n-1; i++){
-            for (int j=0; j < n-i-1; j++){
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
                 cont++;
-                if (arreglo[j] > arreglo[j+1]){
+                if (arreglo[j] > arreglo[j + 1]) {
                     // intercambiar: swap
                     ci++;
                     int temporal = arreglo[j];
-                    arreglo[j] = arreglo[j+1];
-                    arreglo[j+1] = temporal;
+                    arreglo[j] = arreglo[j + 1];
+                    arreglo[j + 1] = temporal;
                 }
             }
         }
@@ -88,108 +72,101 @@ public class DatosDesordenados {
         System.out.println("BS-intercambios = " + ci);
         return new DatosOrdenados(arreglo);
     }
-    
-       
-    
-    public DatosOrdenados insertSort(){
-         // obtener una copia de los datos desordenados
-        int [] a = this.getCopiaValores();
-        
-	int i, j, aux; 
-	int cont=0; 
-	for ( i = 1; i < a.length; i++){
-		j = i;
-		aux = a[i];
-		while (j >0 && aux < a[j-1]){
-                   cont++;
-                   a[j] = a[j-1];
-                   j--; 
-		}
-		a[j] = aux; 
-	}
-        System.out.println("IS-comparaciones = " + cont);
-	// devolver los datos ordenados
-        return new DatosOrdenados(a);
+
+    public DatosOrdenados QuickSort() {
+        int[] arreglo = this.getCopiaValores();
+
+        QuickSort1(arreglo, 0, arreglo.length - 1);
+
+        return new DatosOrdenados(arreglo);
     }
-    
-    public DatosOrdenados mergeSort(){
-    int [] x = this.getCopiaValores();
-	// Aquí va la llamada al método mergesort( arreglo, l, r)
-	this.mergesort( x, 0, x.length - 1);
-        System.out.println("MS-comparaciones = " + cm);
-	return new DatosOrdenados(x);
-    } // fin del método ordenacionMerge
-    
-   private void mergesort (int v[], int l, int r) {
-		 int m = (r+l)/2; 
-		 if (r > l) { 
-                     cm++;
-			 mergesort (v, l, m);
-			 mergesort (v, m+1, r); 
-			 merge (v, l, m, r); 
-		 }
-	}
-    static int cm=0;
-   private void merge (int v[], int l, int m, int r)
-	{
-	//Encuentra el tamaño de los sub-vectores para unirlos.
-	  int n1 = m - l + 1;
-	  int n2 = r - m;
 
-	  //Vectores temporales.
-	  int arrIzq[] = new int [n1];
-	  int arrDer[] = new int [n2];
+    private void QuickSort1(int arreglo[], int izq, int der) {
 
-	  //Copia los datos a los arreglos temporales.
-	  for (int i=0; i < n1; i++) {
-              cm++;
-		arrIzq[i] = v[l+i];
-	  }
-	  for (int j=0; j < n2; j++) {
-              cm++;
-		arrDer[j] = v[m + j + 1];
-	  }
-	  // Combinación (mezcla) de los dos arreglos:
-	  int i = 0, j = 0;
-	  int k = l;
-	  while (i < n1 && j < n2) {//Ordenamiento.
-                cm++;
-		if (arrIzq[i] <= arrDer[j]) {
-			v[k] = arrIzq[i];
-			i++;
-		} else {
-			v[k] = arrDer[j];
-			j++;
-		}
-		k++;
-	  }//Fin del while.
-
-	  /* Si quedan elementos por ordenar */
-	  //Copiar los elementos restantes de arrIzq[].
-	  while (i < n1) {
-              cm++;
-	    v[k] = arrIzq[i];
-	    i++;
-	    k++;
-	  }
-	  //Copiar los elementos restantes de arrDer[].
-	  while (j < n2) {
-              cm++;
-	    v[k] = arrDer[j];
-	    j++;
-	    k++;
-	  }
-	}
-    
-    @Override
-    public String toString(){
-        String cad = "Datos DESORDENADOS: ";
-        for (int x : valores){
-            cad += x + ", ";
+        int pivote = arreglo[izq];
+        int i = izq;
+        int j = der;
+        int aux;
+        while (i < j) {
+            while (arreglo[i] <= pivote && i < j) {
+                i++;
+            }
+            while (arreglo[j] > pivote) {
+                j--;
+            }
+            if (i < j) {
+                aux = arreglo[i];
+                arreglo[i] = arreglo[j];
+                arreglo[j] = aux;
+            }
         }
-        return cad;
+        arreglo[izq] = arreglo[j];
+        arreglo[j] = pivote;
+
+        if (izq < j - 1) {
+            QuickSort1(arreglo, izq, j - 1);
+        }
+        if (j + 1 < der) {
+            QuickSort1(arreglo, j + 1, der);
+        }
+
     }
-    
-    
-    
+
+    public DatosOrdenados ShellSort() {
+        int[] S = this.getCopiaValores();
+        int salto, aux, i;
+        boolean cambio;
+
+        for (salto = S.length / 2; salto != 0; salto /= 2) {
+            cambio = true;
+
+            while (cambio) { //mientras se intercambio algun elemento
+                cambio = false;
+                for (i = salto; i < S.length; i++) {
+                    if (S[i - salto] > S[i]) {
+                        aux = S[i];
+                        S[i] = S[i - salto];
+                        S[i - salto] = aux;
+                        cambio = true;
+                    }
+                }
+            }
+
+        }
+        return new DatosOrdenados(S);
+    }
+
+    public DatosOrdenados Radix() {
+        int[] R = this.getCopiaValores();
+        int[][] bucket = new int[10][R.length];
+        int[] bucketOfElement = new int[10];
+        int max = 0;
+        // Encuentra el elemento más grande en la matriz
+        for (int i = 0; i < R.length; i++) {
+            if (R[i] > max) {
+                max = R[i];
+            }
+        }
+        // Calcula el número de bits del elemento más grande
+        int maxLength = (max + "").length();
+        for (int m = 0, n = 1; m < maxLength; m++, n *= 10) {
+            // Coloca los números en arr en los cubos correspondientes según sus unidades, decenas, centenas, etc.
+            for (int i = 0; i < R.length; i++) {
+                int digit = R[i] / n % 10;
+                // Asignar el valor de arr [i] a la matriz bidimensional en el depósito
+                bucket[digit][bucketOfElement[digit]] = R[i];
+                bucketOfElement[digit]++;
+            }
+            int index = 0;
+            // Leer los elementos en el depósito y reasignarlos a arr
+            for (int j = 0; j < 10; j++) {
+                for (int k = 0; k < bucketOfElement[j]; k++) {
+                    R[index] = bucket[j][k];
+                    index++;
+                }
+                bucketOfElement[j] = 0;// Borrar el número de elementos en cada uno
+            }
+        }
+        return new DatosOrdenados(R);
+    }
 }
