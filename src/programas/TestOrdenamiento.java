@@ -4,8 +4,8 @@
  */
 
 package programas;
-import datos.DatosDesordenados;
-import datos.DatosOrdenados;
+import clases.DatosDesordenados;
+import clases.DatosOrdenados;
 import javax.swing.JOptionPane;
 
 /**
