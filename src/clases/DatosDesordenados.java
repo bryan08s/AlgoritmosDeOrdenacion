@@ -1,5 +1,5 @@
+package clases;
 
-import clases.DatosOrdenados;
 
 public class DatosDesordenados {
 
